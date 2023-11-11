@@ -64,6 +64,9 @@
             padding: 3rem;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
@@ -75,7 +78,7 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="card mycard">
-                <form class="verticalform" method="post" action="/update_loans/{{id_loan}}/">
+                <form class="verticalform" method="POST" action="/update_loans/{{id_loan}}/">
                     {% csrf_token %}
                     {% bootstrap_form form %}
                     <div class="text-center mt-5">

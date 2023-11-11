@@ -1,20 +1,20 @@
-
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    {% load bootstrap4 %}   
-    {% bootstrap_css %}   
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
     {% bootstrap_javascript %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prestamos</title>
     <style>
-    
         body {
             background-color: #ffffff;
             margin: 0;
             font-family: 'Arial', sans-serif;
         }
+
         nav {
             background-color: #222222;
             padding: 15px 20px;
@@ -23,6 +23,7 @@
             justify-content: space-between;
             align-items: center;
         }
+
         h1 {
             color: #f1e4e4;
         }
@@ -54,26 +55,49 @@
             color: #666;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".btn-eliminar").on("click", function () {
+                var loanId = $(this).data("loan-id");
+                $.ajax({
+                    url: "/delete_loans/" + loanId + "/",
+                    type: "DELETE",
+                    success: function (response) {
+                        console.log(response);
+                        location.reload();
+                        // Puedes realizar acciones adicionales después de la eliminación
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        // Manejar el error de acuerdo a tus necesidades
+                    }
+                });
+            });
+        });
+    </script>
+
 </head>
+
 <body>
     <div>
         <nav>
             <h1>Prestamos</h1>
             <a href="/" class="btn btn-danger">Salir</a>
         </nav>
-     
-          
-          <table class="table">
+
+
+        <table class="table">
             <thead class="thead-light">
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nombre y apellido</th>
-                <th scope="col">Dni</th>
-                <th scope="col">Género</th>
-                <th scope="col">Email</th>
-                <th scope="col">Monto solicitado</th>
-                <th scope="col">Acciones</th>
-              </tr>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre y apellido</th>
+                    <th scope="col">Dni</th>
+                    <th scope="col">Género</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Monto solicitado</th>
+                    <th scope="col">Acciones</th>
+                </tr>
             </thead>
             <tbody>
                 {% for loan in loans %}
@@ -89,16 +113,17 @@
                             <a href="/update_loans/{{ loan.id }}/">
                                 <button type="button" class="btn btn-primary mt-1 mx-2">Editar prestamo</button>
                             </a>
-                            <a href="/delete_loans/{{ loan.id }}/">
-                                <button type="button" class="btn btn-danger mt-1 ">Eliminar prestamo</button>
+                            <a href="#" data-loan-id="{{ loan.id }}" class="btn-eliminar">
+                                <button type="button" class="btn btn-danger mt-1">Eliminar préstamo</button>
                             </a>
                         </div>
                     </td>
                 </tr>
-        
-            {% endfor %}
+
+                {% endfor %}
             </tbody>
-          </table>
+        </table>
     </div>
-    </body>
+</body>
+
 </html>

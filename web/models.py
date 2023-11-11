@@ -7,16 +7,6 @@ class Loans(models.Model):
     email = models.EmailField()
     requested_amount = models.DecimalField(max_digits=10, decimal_places=2)
     
-    
-    def to_dict(self):
-        return {
-            'id': str(self.id),
-            'dni': self.dni,
-            'name_and_last_name': self.name_and_last_name,
-            'genre': self.genre,
-            'email': self.email,
-            'requested_amount': str(self.requested_amount),
-        }
 
 
 

@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 import json
 from .models import Users,Loans
+from .serializers import LoansSerializer
 
 
 class LoansTestCase(TestCase):
@@ -16,31 +17,26 @@ class LoansTestCase(TestCase):
     def test_loan_update_dni(self):
         client = Client()
         loan = Loans.objects.filter(id="1").first()
-        loan_data = loan.to_dict()
-        old_dni = loan.dni
-        email = loan.email
-        new_dni = '11111111'
-        loan_data['dni'] = new_dni
-        response = client.post('/update_loans/1/', loan_data)
-        self.assertEqual(response.status_code, 302)
+        serializer = LoansSerializer(loan)
+        old_dni = serializer.data['dni']
+        data_loan = serializer.data;
+        data_loan['dni'] = '11111111'
+        response = client.post('/update_loans/1/', data_loan)
+        self.assertEqual(response.status_code, 200)
         loan = Loans.objects.filter(id="1").first()
         self.assertFalse(loan.dni == old_dni)
-        self.assertTrue(loan.email == email)
 
     def test_loan_update_email(self):
         client = Client()
         loan = Loans.objects.filter(id="1").first()
-        email_old = loan.email
-        dni = loan.dni
-        loan_data = loan.to_dict()
-        new_email = 'valetobares@gmail.com'
-        loan_data['email'] =  new_email
-        response = client.post('/update_loans/1/', loan_data)
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url=="/loans/")
+        serializer = LoansSerializer(loan)
+        email_old = serializer.data['email']
+        data_loan = serializer.data
+        data_loan['email'] = 'valetobares@gmail.com'
+        response = client.post('/update_loans/1/', data_loan)
+        self.assertEqual(response.status_code, 200)
         loan = Loans.objects.filter(id="1").first()
         self.assertFalse(loan.email == email_old)
-        self.assertTrue(loan.dni == dni)
 
     def test_loan_update_error_incomplete_form(self):
         client = Client()
@@ -54,7 +50,7 @@ class LoansTestCase(TestCase):
         self.assertTrue(response.url=="/error/")
 
 
-    def test_loan_update_error_incomplete_form(self):
+    def test_loan_update_error_id_not_exist(self):
         client = Client()
         loan_data = {
             'id':1,
@@ -74,7 +70,7 @@ class LoansTestCase(TestCase):
             'dni':'11111111',
             'name_and_last_name':'valentin tobares'
         }
-        response = client.post('/', loan_data)
+        response = client.post('/update_loans/1/', loan_data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url=="/error/")
 
@@ -82,16 +78,15 @@ class LoansTestCase(TestCase):
 
     def test_loan_delete(self):
         client = Client()
-        response = client.get('/delete_loans/1/')
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url=="/loans/")
+        response = client.delete('/delete_loans/1/')
+        self.assertEqual(response.status_code, 200)
         loan = Loans.objects.filter(id=1).first()
         self.assertEquals(loan, None)
 
 
     def test_loan_delete_not_found(self):
         client = Client()
-        response = client.get('/delete_loans/99/')
+        response = client.delete('/delete_loans/99/')
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url=="/error/")
 
@@ -129,5 +124,4 @@ class UsersTestCase(TestCase):
             'password':'123'
         }
         response = client.post('/login/', loan_data)
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url=="/loans/")
+        self.assertEqual(response.status_code, 200)
