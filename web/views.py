@@ -14,7 +14,9 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from .utils import loan_application_accepted, get_fields_loans, all_loans
 
 class IndexApiView(APIView):
-    
+    """
+    List a new loan form
+    """
     renderer_classes = [TemplateHTMLRenderer]
     
     def get(self, request, format=None):
@@ -25,7 +27,7 @@ class IndexApiView(APIView):
 
 class LoansApiView(APIView):
     """
-    
+    List all loans, delete or create a new one
     """
     renderer_classes = [TemplateHTMLRenderer]
     
@@ -70,50 +72,10 @@ class LoansApiView(APIView):
         except:
             return redirect('error')
 
-    # def put(self, request, loan_id ,format=None):
-    #     print("esta entrando aca o no ???")
-    #     serializer = LoansSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         data = serializer.validated_data
-    #         loan = Loans.objects.filter(id=loan_id).first()
-    #         loan.dni = data['dni']
-    #         loan.name_and_last_name = data['name_and_last_name']
-    #         loan.genre = data['genre']
-    #         loan.email = data['email']
-    #         loan.requested_amount = data['requested_amount'] 
-    #         loan.save()
-    #         return Response({'loans': all_loans()}, template_name='web/loans_list.html')
-    #     return redirect('error')
-
-
-# def update_loans(request, loan_id):
-#     """
-
-#     """
-#     loan = Loans.objects.filter(id=loan_id).first()
-#     if request.method == 'POST':
-#         form = LoanForm(request.POST)
-#         if form.is_valid() or loan is not None:
-#             try:
-#                 loan.dni = form.cleaned_data['dni']
-#                 loan.name_and_last_name = form.cleaned_data['name_and_last_name']
-#                 loan.genre = form.cleaned_data['genre']
-#                 loan.email = form.cleaned_data['email']
-#                 loan.requested_amount = form.cleaned_data['requested_amount'] 
-#                 loan.save()
-#                 return redirect('loans')
-#             except Exception as e:
-#                 print(f"Error while trying to save the loan {e}")
-#                 return redirect('error')
-#         else:
-#             print(f"Error with form, invalid LoanForm")
-#             return redirect('error')
-
-    
      
 class UsersApiView(APIView):
     """
-    
+    Create a new user
     """
     renderer_classes = [TemplateHTMLRenderer]
 
@@ -133,25 +95,25 @@ class UsersApiView(APIView):
 
 def error(request):
     """
-    This method returns a render to the error page.
+    Returns a render to the error page.
     """
     return render(request,'web/pag_error.html')
 
 def successful_loan(request):
     """
-    This method returns render the 'Loan Accepted' page.
+    Returns render the 'Loan Accepted' page.
     """
     return render(request,'web/page_accepted_loans.html')
 
 def unsuccessful_loan(request):
     """
-    This method returns render the 'Loan not accepted' page.
+    Returns render the 'Loan not accepted' page.
     """
     return render(request,'web/page_not_accepted_loans.html')
 
 def not_login(request):
     """
-    This method returns the Login Failure page.
+    Returns the Login Failure page.
     """
     return render(request,'web/page_not_login.html')
 

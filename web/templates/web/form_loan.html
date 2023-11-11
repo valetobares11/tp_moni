@@ -85,7 +85,7 @@
             {% csrf_token %}
             <div>
                 {% buttons %}
-                <button type="submit" class="btn btn-success mt-4">Ingresar</button>
+                <button type="submit" class="btn btn-success mt-4">Sign in</button>
                 {% endbuttons %}
             </div>
         </form>
@@ -97,14 +97,15 @@
         <div class="row justify-content-center">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="text-center">Solicitá tu prestamo</h2>
+                    <h2 class="text-center">
+                        Apply for your loan!</h2>
                 </div>
                 <div class="mycard">
                     <form method="post" class="verticalform" action="/loans/">
                         {% csrf_token %}
                         {% bootstrap_form form %}
                         <div class="text-center mt-5">
-                            <button type="submit" class="btn btn-primary">Solicitar Préstamo</button>
+                            <button type="submit" class="btn btn-primary">Apply Loan</button>
                         </div>
                     </form>
                 </div>

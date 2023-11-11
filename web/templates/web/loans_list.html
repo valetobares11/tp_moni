@@ -82,8 +82,8 @@
 <body>
     <div>
         <nav>
-            <h1>Prestamos</h1>
-            <a href="/" class="btn btn-danger">Salir</a>
+            <h1>Loans</h1>
+            <a href="/" class="btn btn-danger">Exit</a>
         </nav>
 
 
@@ -91,12 +91,12 @@
             <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Nombre y apellido</th>
+                    <th scope="col">Name and last name</th>
                     <th scope="col">Dni</th>
-                    <th scope="col">Género</th>
+                    <th scope="col">Genre</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Monto solicitado</th>
-                    <th scope="col">Acciones</th>
+                    <th scope="col">Request amount</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -111,10 +111,10 @@
                     <td>
                         <div>
                             <a href="/update_loans/{{ loan.id }}/">
-                                <button type="button" class="btn btn-primary mt-1 mx-2">Editar prestamo</button>
+                                <button type="button" class="btn btn-primary mt-1 mx-2">Edit loan</button>
                             </a>
                             <a href="#" data-loan-id="{{ loan.id }}" class="btn-eliminar">
-                                <button type="button" class="btn btn-danger mt-1">Eliminar préstamo</button>
+                                <button type="button" class="btn btn-danger mt-1">Remove loan</button>
                             </a>
                         </div>
                     </td>
