@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <title>Formulario de Prestamos</title>
+    <style>
+        body {
+            background-color: #fafafa;
+            margin: 0;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+        }
+
+        nav {
+            background-color: #222222;
+            padding: 15px 20px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+        }
+
+        form button {
+            margin-left: 15px;
+        }
+
+        form input[type="text"],
+        form input[type="password"] {
+            margin-right: 10px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            border-bottom: 2px solid #fff;
+        }
+
+        nav a:last-child {
+            margin-left: auto;
+        }
+
+        .verticalform {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .mycard {
+            background-color: #ffffff;
+            width: fit-content;
+            padding: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <h2>Modificacion de presupuesto</h2>
+        <a href="/loans" class="btn btn-success">Volver</a>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="card mycard">
+                <form class="verticalform" method="post" action="/update_loans/{{id_loan}}/">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <div class="text-center mt-5">
+                        <button type="submit" class="btn btn-primary">Editar prestamo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Prestamos</title>
+    <style>
+        body {
+            background-color: #fafafa;
+            margin: 0;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+        }
+
+        nav {
+            background-color: #222222;
+            padding: 15px 20px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+        }
+
+        form button {
+            margin-left: 15px;
+        }
+
+        form input[type="text"],
+        form input[type="password"] {
+            margin-right: 10px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        .logincontainer {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            gap: 1rem;
+        }
+
+
+        .verticalform {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        nav a:hover {
+            border-bottom: 2px solid #fff;
+        }
+
+        nav a:last-child {
+            margin-left: auto;
+        }
+
+        .mycard {
+            background-color: #ffffff;
+            width: fit-content;
+            padding: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <nav>
+        <form method="post" class="logincontainer" action="/login/">
+            {% bootstrap_form formlogin %}
+            {% csrf_token %}
+            <div>
+                {% buttons %}
+                <button type="submit" class="btn btn-success mt-4">Ingresar</button>
+                {% endbuttons %}
+            </div>
+        </form>
+    </nav>
+
+
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Solicitá tu prestamo</h2>
+                </div>
+                <div class="mycard">
+                    <form method="post" class="verticalform" action="/">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <div class="text-center mt-5">
+                            <button type="submit" class="btn btn-primary">Solicitar Préstamo</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

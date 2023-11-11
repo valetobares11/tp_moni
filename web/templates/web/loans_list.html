@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load bootstrap4 %}   
+    {% bootstrap_css %}   
+    {% bootstrap_javascript %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prestamos</title>
+    <style>
+    
+        body {
+            background-color: #ffffff;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        nav {
+            background-color: #222222;
+            padding: 15px 20px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 {
+            color: #f1e4e4;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <nav>
+            <h1>Prestamos</h1>
+            <a href="/" class="btn btn-danger">Salir</a>
+        </nav>
+     
+          
+          <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre y apellido</th>
+                <th scope="col">Dni</th>
+                <th scope="col">Género</th>
+                <th scope="col">Email</th>
+                <th scope="col">Monto solicitado</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for loan in loans %}
+                <tr>
+                    <th scope="row">{{loan.id}}</th>
+                    <td>{{loan.name_and_last_name}}</td>
+                    <td>{{loan.dni}}</td>
+                    <td>{{loan.genre}}</td>
+                    <td>{{loan.email}}</td>
+                    <td>{{loan.requested_amount}}</td>
+                    <td>
+                        <div>
+                            <a href="/update_loans/{{ loan.id }}/">
+                                <button type="button" class="btn btn-primary mt-1 mx-2">Editar prestamo</button>
+                            </a>
+                            <a href="/delete_loans/{{ loan.id }}/">
+                                <button type="button" class="btn btn-danger mt-1 ">Eliminar prestamo</button>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+        
+            {% endfor %}
+            </tbody>
+          </table>
+    </div>
+    </body>
+</html>
