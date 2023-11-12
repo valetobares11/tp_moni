@@ -5,92 +5,84 @@ from .models import Users, Loans
 from .forms import LoanForm,UserLoginForm
 
 from .serializers import LoansSerializer, UsersSerializer
-from django.http import Http404
-from rest_framework.views import APIView
+# from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
+
 from rest_framework.response import Response
 from rest_framework import status 
 from rest_framework.renderers import TemplateHTMLRenderer
-
 from .utils import loan_application_accepted, get_fields_loans, all_loans
-
-class IndexApiView(APIView):
-    """
-    List a new loan form
-    """
-    renderer_classes = [TemplateHTMLRenderer]
-    
-    def get(self, request, format=None):
-        form = LoanForm()        
-        formlogin = UserLoginForm()
-        return Response({'form': form, 'formlogin': formlogin}, template_name='web/form_loan.html')
+from rest_framework import viewsets
 
 
-class LoansApiView(APIView):
+class LoansModelViewSet(viewsets.ModelViewSet):
     """
     List all loans, delete or create a new one
     """
+    queryset = Loans.objects.all()
+    serializer_class = LoansSerializer
     renderer_classes = [TemplateHTMLRenderer]
-    
-    def get(self, request, loan_id = None, format=None):
-        if loan_id == None:
-            data = all_loans()
-            return Response({'loans': data}, template_name='web/loans_list.html')
-        loan = Loans.objects.filter(id=loan_id).first()
+
+    def list(self, request, pk=None, *args, **kwargs):
+        if pk is None:
+            queryset = all_loans()
+            serializer = self.get_serializer(queryset, many=True)
+            return Response({'loans': serializer.data}, template_name='web/loans_list.html')
+        loan = self.get_object()
         form = LoanForm(initial=get_fields_loans(loan))
         return render(request, 'web/form_loan_update.html', {'form': form, 'id_loan': loan.id})
-    
-    def post(self, request, loan_id=None, format=None):
-        serializer = LoansSerializer(data=request.data)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             data = serializer.validated_data
-            if loan_id == None:
-                if loan_application_accepted(data['dni']):
-                    serializer.save()
-                    return redirect('successful_loan')
-                else:
-                    return redirect('unsuccessful_loan')
+            if loan_application_accepted(data['dni']):
+                serializer.save()
+                return redirect('successful_loan')
             else:
-                try:
-                    loan = Loans.objects.filter(id=loan_id).first()
-                    loan.dni = data['dni']
-                    loan.name_and_last_name = data['name_and_last_name']
-                    loan.genre = data['genre']
-                    loan.email = data['email']
-                    loan.requested_amount = data['requested_amount'] 
-                    loan.save()
-                    return Response({'loans': all_loans()}, template_name='web/loans_list.html')
-                except:
-                    return redirect('error')
+                return redirect('unsuccessful_loan')
         return redirect('error')
-    
-    
-    def delete(self, request, loan_id, format=None):
-        try:
-            loan = Loans.objects.filter(id=loan_id).first()
-            loan.delete()
-            return Response({'loans': all_loans()}, template_name='web/loans_list.html')
-        except:
-            return redirect('error')
 
-     
-class UsersApiView(APIView):
+    def update(self, request, *args, **kwargs):
+        loan = self.get_object()
+        serializer = self.get_serializer(loan, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'loans': all_loans()}, template_name='web/loans_list.html')
+        return redirect('error')
+
+    def destroy(self, request, *args, **kwargs):
+        loan = self.get_object()
+        loan.delete()
+        return Response({'loans': all_loans()}, template_name='web/loans_list.html')
+    
+
+
+
+class UsersModelViewSet(ModelViewSet):
     """
     Create a new user
     """
+    queryset = Users.objects.all()
+    serializer_class = UsersSerializer
     renderer_classes = [TemplateHTMLRenderer]
 
-    def post(self, request, format=None):
+    def login(self, request, *args, **kwargs):
         serializer = UsersSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.data.get('email', None)
             password = serializer.data.get('password', None)
-            user = Users.objects.filter(email=email , password=password).first()
-            if user is not None and user.is_admin==True:
+            user = Users.objects.filter(email=email, password=password).first()
+            if user is not None and user.is_admin:
                 return Response({'loans': all_loans()}, template_name='web/loans_list.html')
             else:
-                return redirect('not_login')    
+                return redirect('not_login')
         return redirect('error')
-
+    
+    def list(self, request, *args, **kwargs):
+        form = LoanForm()
+        formlogin = UserLoginForm()
+        return Response({'form': form, 'formlogin': formlogin}, template_name='web/form_loan.html')
 
 
 def error(request):
