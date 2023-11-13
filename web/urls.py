@@ -2,7 +2,6 @@ from django.urls import path
 from . import views
 from .views import UsersModelViewSet,LoansModelViewSet
 
-
 urlpatterns = [
     path('', UsersModelViewSet.as_view({'get': 'list'}), name='users-list'),
     path('login/', UsersModelViewSet.as_view({'post': 'login'}), name='users-login'),

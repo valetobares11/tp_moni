@@ -3,7 +3,6 @@ import json
 from .models import Users,Loans
 from .serializers import LoansSerializer
 
-
 class LoansTestCase(TestCase):
     def setUp(self):
         Loans.objects.create(id=1,
@@ -23,10 +22,8 @@ class LoansTestCase(TestCase):
         data_loan['dni'] = new_dni
         headers = {'Content-Type': 'application/json'}
         response = client.put('/update_loans/1/', data=json.dumps(data_loan), headers=headers)
-        print(response)
         self.assertEqual(response.status_code, 200)
         loan = Loans.objects.filter(id="1").first()
-        print(loan)
         self.assertTrue(loan.dni != old_dni and loan.dni==new_dni)
 
     def test_loan_update_email(self):
@@ -126,3 +123,4 @@ class UsersTestCase(TestCase):
         }
         response = client.post('/login/', loan_data)
         self.assertEqual(response.status_code, 200)
+        

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-sxf*tl29#ij2n6w)q_r5+a*9hg!60flkavh3c928hdidg-8txo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 URL_MONI = 'https://api.moni.com.ar/api/v4/scoring/pre-score/{}'
 

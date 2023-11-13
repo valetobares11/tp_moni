@@ -7,8 +7,6 @@ class Loans(models.Model):
     email = models.EmailField()
     requested_amount = models.DecimalField(max_digits=10, decimal_places=2)
     
-
-
 class Users(models.Model):
     email = models.EmailField()
     password = models.CharField(max_length=20)
